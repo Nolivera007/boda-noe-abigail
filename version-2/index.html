@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boda Noé &amp; Abigail — 20 Junio 2026</title>
+    <title>Boda Noé ∞ Abigail — 20 Junio 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -49,6 +49,19 @@
         }
         .welcome-img-wrap {
             position: absolute; inset: 0; overflow: hidden;
+            background:
+                radial-gradient(circle at 18% 20%, rgba(232,204,128,.18) 0%, rgba(232,204,128,0) 40%),
+                radial-gradient(circle at 82% 78%, rgba(232,204,128,.14) 0%, rgba(232,204,128,0) 46%),
+                linear-gradient(160deg, #243a24 0%, #1a2d1a 46%, #122312 100%);
+        }
+        .welcome-img-wrap::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                rgba(255,255,255,.06) 0 2px,
+                transparent 2px 12px
+            );
+            opacity: .22;
         }
         .welcome-img-wrap::after {
             content: ''; position: absolute; inset: 0;
@@ -58,15 +71,6 @@
                 rgba(26,45,26,.55) 50%,
                 rgba(26,45,26,.85) 100%
             );
-        }
-        .welcome-img {
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: center;
-            animation: welcomeZoom 12s ease-in-out infinite alternate;
-        }
-        @keyframes welcomeZoom {
-            from { transform: scale(1); }
-            to   { transform: scale(1.08); }
         }
         .welcome-content {
             position: relative; z-index: 2;
@@ -894,14 +898,12 @@
 ══════════════════════════════ -->
 <div id="welcome-overlay">
     <div class="welcome-img-wrap">
-        <img src="portada.jpg" alt="Ceremonia" class="welcome-img"
-             onerror="this.style.display='none'">
     </div>
     <div class="welcome-content">
         <p class="welcome-eyebrow">Tenemos el honor de</p>
         <p class="welcome-eyebrow" style="margin-bottom:20px;">invitarte a nuestra boda</p>
         <h1 class="welcome-names">Noé</h1>
-        <span class="welcome-and">&amp;</span>
+        <span class="welcome-and">∞</span>
         <h1 class="welcome-names">Abigail</h1>
 
         <div class="welcome-divider">
@@ -979,7 +981,8 @@
         <p class="hero-eyebrow">Tenemos el honor de</p>
         <p class="hero-eyebrow" style="margin-bottom:20px;">invitarte a nuestra boda</p>
         <span class="name-script noe">Noé</span>
-        <span class="name-script and">y Abigail</span>
+        <span class="name-script and">∞</span>
+        <span class="name-script abi">Abigail</span>
 
         <div class="hero-line">
             <svg viewBox="0 0 24 24" fill="var(--olive-light)" width="16" height="16">
@@ -1553,7 +1556,7 @@
      FOOTER
 ══════════════════════════════ -->
 <footer>
-    <div class="footer-names">Noé &amp; Abigail</div>
+    <div class="footer-names">Noé ∞ Abigail</div>
     <p class="footer-date">20 &middot; Junio &middot; 2026</p>
     <p class="footer-sub">Con amor y gratitud, los esperamos</p>
 </footer>
@@ -1626,7 +1629,7 @@ const NOE_WA   = '+50488472150';
 const ABBY_WA  = '+50495221083';
 
 function waUrl(phone, name, count){
-    const msg = encodeURIComponent(`Hola! Confirmo mi asistencia a la boda de Noé & Abigail el 20 de Junio 2026.\nNombre: ${name} (${count} ${count===1?'persona':'personas'})`);
+    const msg = encodeURIComponent(`Hola! Confirmo mi asistencia a la boda de Noé ∞ Abigail el 20 de Junio 2026.\nNombre: ${name} (${count} ${count===1?'persona':'personas'})`);
     return `https://wa.me/${phone.replace(/\D/g,'')}?text=${msg}`;
 }
 

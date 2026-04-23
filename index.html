@@ -380,7 +380,7 @@
             letter-spacing:2px; text-transform:uppercase;
             color:var(--olive-light); margin-bottom:14px;
         }
-        .rcard-list  { list-style:none; border-top:1px solid var(--cream-border); padding-top:12px; }
+        .rcard-list  { list-style:none; border-top:1px solid var(--cream-border); padding-top:12px; margin-bottom:18px; }
         .rcard-list li {
             padding:5px 0; font-size:16px;
             display:flex; align-items:center; gap:10px;
@@ -390,6 +390,28 @@
             border-radius:50%; background:var(--olive-light); flex-shrink:0;
         }
         .no-result { text-align:center; padding:26px; font-style:italic; color:var(--text-light); }
+
+        /* Botones de confirmación dentro del resultado */
+        .rcard-confirm-row {
+            display: flex; flex-wrap: wrap; gap: 10px;
+            border-top: 1px solid var(--cream-border); padding-top: 16px;
+        }
+        .rcard-confirm-btn {
+            flex: 1; min-width: 160px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+            background: var(--olive-dark); color: var(--cream);
+            padding: 10px 16px; text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+            transition: background .3s;
+        }
+        .rcard-confirm-btn:hover { background: var(--olive); }
+        .rcard-deadline {
+            text-align: center; padding: 12px;
+            background: #fef3cd; border: 1px solid #f5c842;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px; color: #856404; letter-spacing: 1px;
+        }
 
         /* ── REGALOS ── */
         #regalos { background: var(--cream); }
@@ -1054,25 +1076,63 @@ const guests = {
 
 // ── SEARCH ──
 function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+const CONFIRM_DEADLINE = new Date('2026-05-20T23:59:59');
+const NOE_WA   = '+50488472150';
+const ABBY_WA  = '+50495221083';
+
+function waUrl(phone, name, count){
+    const msg = encodeURIComponent(`Hola! Confirmo mi asistencia a la boda de Noé & Abigail el 20 de Junio 2026.\nNombre: ${name} (${count} ${count===1?'persona':'personas'})`);
+    return `https://wa.me/${phone.replace(/\D/g,'')}?text=${msg}`;
+}
 
 function doSearch(){
     const q = document.getElementById('guestSearch').value.trim();
     const box = document.getElementById('results');
-    if(q.length < 2){
-        box.innerHTML='<div class="no-result">Ingresa al menos 2 letras.</div>';
+
+    if(q.length === 0){ box.classList.remove('show'); box.innerHTML=''; return; }
+
+    if(q.length < 3){
+        box.innerHTML='<div class="no-result">Ingresa al menos 3 letras para buscar.</div>';
         box.classList.add('show'); return;
     }
+
+    const now = new Date();
+    const deadlinePassed = now > CONFIRM_DEADLINE;
+
     const nq = norm(q);
     const hits = Object.entries(guests).filter(([n])=> norm(n).includes(nq));
+
     if(!hits.length){
-        box.innerHTML=`<div class="no-result">No encontramos "<strong>${q}</strong>" en la lista.<br><small style="margin-top:6px;display:block">Si crees que hay un error, contáctanos.</small></div>`;
+        box.innerHTML=`<div class="no-result">No encontramos <strong>${escHtml(q)}</strong> en la lista.<br><small style="margin-top:6px;display:block">Verifica la ortografía o usa el apellido. Si crees que hay un error, contáctanos.</small></div>`;
+    } else if(hits.length > 5){
+        box.innerHTML=`<div class="no-result">Hay varios resultados para <strong>${escHtml(q)}</strong>.<br><small style="margin-top:6px;display:block">Sé más específico: escribe nombre y apellido.</small></div>`;
     } else {
-        box.innerHTML = hits.map(([name,list])=>`
-            <div class="rcard">
-                <div class="rcard-name">${name}</div>
-                <div class="rcard-count">${list.length} ${list.length===1?'persona invitada':'personas invitadas'}</div>
-                <ul class="rcard-list">${list.map(g=>`<li>${g}</li>`).join('')}</ul>
-            </div>`).join('');
+        const deadlineHtml = deadlinePassed
+            ? `<div class="rcard-deadline">⚠️ El plazo de confirmación cerró el 20 de mayo. Contáctanos directamente.</div>`
+            : '';
+        box.innerHTML = hits.map(([name, list])=>{
+            const cnt = list.length;
+            const confirmRow = deadlinePassed ? '' : `
+                <div class="rcard-confirm-row">
+                    <a class="rcard-confirm-btn" href="${waUrl(NOE_WA, escHtml(name), cnt)}" target="_blank" rel="noopener">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.104.547 4.082 1.504 5.8L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.854 0-3.6-.485-5.12-1.335l-.36-.214-3.762.981.998-3.67-.235-.375A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                        Confirmar con Noé
+                    </a>
+                    <a class="rcard-confirm-btn" href="${waUrl(ABBY_WA, escHtml(name), cnt)}" target="_blank" rel="noopener">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.104.547 4.082 1.504 5.8L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.854 0-3.6-.485-5.12-1.335l-.36-.214-3.762.981.998-3.67-.235-.375A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                        Confirmar con Abigail
+                    </a>
+                </div>`;
+            return `
+                <div class="rcard">
+                    <div class="rcard-name">${escHtml(name)}</div>
+                    <div class="rcard-count">${cnt} ${cnt===1?'persona invitada':'personas invitadas'}</div>
+                    <ul class="rcard-list">${list.map(g=>`<li>${escHtml(g)}</li>`).join('')}</ul>
+                    ${confirmRow}
+                </div>`;
+        }).join('') + deadlineHtml;
     }
     box.classList.add('show');
 }

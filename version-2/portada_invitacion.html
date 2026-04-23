@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portada Invitación - Noé y Abigail</title>
+    <style>
+        @page { size: A4; margin: 0; }
+
+        :root {
+            --cream: #f7f3eb;
+            --olive-dark: #1f3b23;
+            --olive: #4a6e4a;
+            --gold: #c8a84b;
+            --gold-soft: #e8d39c;
+            --text: #1f2a1f;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0;
+            padding: 0;
+            font-family: "Cormorant Garamond", Georgia, serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 15% 15%, rgba(232,211,156,.38) 0, rgba(232,211,156,0) 40%),
+                radial-gradient(circle at 88% 82%, rgba(200,168,75,.22) 0, rgba(200,168,75,0) 44%),
+                linear-gradient(145deg, #f9f6f0 0%, #f4efe5 52%, #eee5d7 100%);
+        }
+
+        .sheet {
+            position: relative;
+            min-height: 297mm;
+            padding: 20mm 18mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frame {
+            width: 100%;
+            min-height: 250mm;
+            border: 1.2px solid rgba(200,168,75,.65);
+            position: relative;
+            padding: 22mm 16mm;
+            text-align: center;
+            background: rgba(255,255,255,.55);
+        }
+
+        .frame::before,
+        .frame::after {
+            content: "";
+            position: absolute;
+            width: 30mm;
+            height: 30mm;
+            border: 1.2px solid rgba(200,168,75,.65);
+        }
+
+        .frame::before {
+            top: 5mm;
+            left: 5mm;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .frame::after {
+            right: 5mm;
+            bottom: 5mm;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        .eyebrow {
+            font-family: "Montserrat", Arial, sans-serif;
+            letter-spacing: 2.6px;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: var(--olive);
+            margin-top: 8mm;
+        }
+
+        .names {
+            margin-top: 16mm;
+            color: var(--olive-dark);
+            line-height: 1;
+        }
+
+        .name {
+            display: block;
+            font-size: 68px;
+            letter-spacing: .5px;
+        }
+
+        .infinity {
+            display: block;
+            margin: 3mm 0;
+            font-size: 52px;
+            color: var(--gold);
+        }
+
+        .date {
+            margin-top: 12mm;
+            font-family: "Montserrat", Arial, sans-serif;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 11px;
+            color: #2b3f2f;
+        }
+
+        .place {
+            margin-top: 3mm;
+            font-style: italic;
+            font-size: 16px;
+            color: #4b5c4d;
+        }
+
+        .divider {
+            width: 58mm;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 11mm auto 0;
+        }
+
+        .cta-wrap {
+            margin-top: 17mm;
+        }
+
+        .cta {
+            display: inline-block;
+            text-decoration: none;
+            font-family: "Montserrat", Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2.4px;
+            font-size: 11px;
+            color: white;
+            background: var(--olive-dark);
+            border: 1px solid var(--olive-dark);
+            padding: 10px 18px;
+        }
+
+        .hint {
+            margin-top: 6mm;
+            font-size: 12px;
+            color: #5a665b;
+        }
+
+        .verse {
+            margin-top: 16mm;
+            font-style: italic;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #4d5b4f;
+            max-width: 120mm;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <main class="sheet">
+        <section class="frame">
+            <p class="eyebrow">Tenemos el honor de invitarte a nuestra boda</p>
+
+            <div class="names">
+                <span class="name">Noé</span>
+                <span class="infinity">∞</span>
+                <span class="name">Abigail</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <p class="date">Sábado · 20 de junio · 2026 · 17:00 h</p>
+            <p class="place">Villa Gracia, El Hatillo, Francisco Morazán</p>
+
+            <div class="cta-wrap">
+                <a class="cta" href="https://tu-url-web-aqui.com">Abrir invitación web</a>
+                <p class="hint">Cambia este enlace por tu URL pública antes de compartir el PDF.</p>
+            </div>
+
+            <p class="verse">
+                "Y sobre todas estas cosas vestíos de amor, que es el vínculo perfecto."<br>
+                Colosenses 3:14
+            </p>
+        </section>
+    </main>
+</body>
+</html>

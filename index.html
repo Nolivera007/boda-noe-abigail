@@ -518,22 +518,13 @@
             .parents-grid { grid-template-columns:1fr; }
             .parents-div  { display:none; }
 
-            .timeline::before { left:16px; transform:none; }
-            .tl-item,.tl-item.L,.tl-item.R {
-                grid-template-columns: 18px 1fr;
-                grid-template-rows: auto auto;
-                gap: 6px 10px;
-            }
-            .tl-item.L .tl-dot,.tl-item.R .tl-dot {
-                grid-column:1; grid-row:1/3; align-self:start; margin-top:5px;
-            }
-            .tl-item.L .tl-time,.tl-item.R .tl-time {
-                grid-column:2; grid-row:1; text-align:left;
-            }
-            .tl-item.L .tl-content,.tl-item.R .tl-content {
-                grid-column:2; grid-row:2; text-align:left;
-            }
-            .tl-item.L .tl-tags { justify-content:flex-start; }
+            .timeline { max-width: 100%; padding: 0 8px; }
+            .timeline::before { left: 50%; transform: translateX(-50%); }
+            .tl-item { gap: 8px; margin-bottom: 32px; }
+            .tl-label { font-size: 13px; }
+            .tl-sub   { font-size: 11px; }
+            .tl-time  { font-size: 10px; }
+            .tl-icon  { font-size: 18px; }
 
             .bruno-card { flex-direction:column; text-align:center; }
             .bruno-text  { text-align:center; }
